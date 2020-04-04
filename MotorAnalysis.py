@@ -57,20 +57,20 @@ plt.figure(1)
 plt.subplot(1, 2, 1,)
 relation = np.polyfit(rpm_arr,torque_arr,2)
 plt.plot(rpm_arr,torque_arr,'o')
-plt.xlabel('rpm')
-plt.ylabel('torque (Oz-In)')
-plt.title('RPM vs torque')
-plt.text(1000,350,str(round(relation[0],5))+'$x^{2} + $' + str(round(relation[1],3)) + 'x + '+ str(round(relation[2],3)))
+plt.xlabel('RPM',fontsize=22)
+plt.ylabel('torque (Oz-In)',fontsize=22)
+plt.title('RPM vs torque',fontsize=22)
+plt.text(600,350,str(round(relation[0],5))+'$x^{2} + $' + str(round(relation[1],3)) + 'x + '+ str(round(relation[2],3)),fontsize=18)
 plt.grid(b=None, which='major', axis='both')
 
 # Plot Speed to RPM
 plt.subplot(1, 2, 2) 
 plt.plot(rpm_arr,speed_arr,'o-')
-plt.xlabel('rpm')
-plt.ylabel('speed (mph)')
-plt.title('RPM vs Speed')
+plt.xlabel('RPM',fontsize=22)
+plt.ylabel('speed (mph)',fontsize=22)
+plt.title('RPM vs Speed',fontsize=22)
 relation = np.polyfit(rpm_arr,speed_arr,1)
-plt.text(1000,10,str(round(relation[0],3)) + 'x + '+ str(round(relation[1],5)))
+plt.text(1000,10,str(round(relation[0],3)) + 'x + '+ str(round(relation[1],5)),fontsize=18)
 plt.grid(b=None, which='major', axis='both')
 plt.show()
 
@@ -99,11 +99,11 @@ degsperwheel1621 = degsperwheel[3::4]
 # Plotting max slope vs active wheels
 plt.figure(2)
 plt.plot(activewheels,degsperwheel313,'r-',activewheels,degsperwheel437,'b-',activewheels,degsperwheel612,'g-',activewheels,degsperwheel1621,'k-')
-plt.legend(['313 RPM','437 RPM','612 RPM','1621 RPM'])
-plt.xlabel('Active wheels')
-plt.ylabel('Max ascent angle (degrees)')
-plt.title('Active Wheels vs Max ascent angle')
-plt.grid(b=None, which='major', axis='both')
+plt.legend(['313 RPM','437 RPM','612 RPM','1621 RPM'],fontsize=16)
+plt.xlabel('Active wheels',fontsize=22)
+plt.ylabel('Max ascent angle (degrees)',fontsize=22)
+plt.title('Active Wheels vs Max ascent angle',fontsize=22)
+plt.grid(b=None, which='major', axis='both',)
 plt.show()
 
 
@@ -116,10 +116,10 @@ wheels3 = degsperwheel[len(degsperwheel)-16:len(degsperwheel)-12]
 # Plotting rpm vs angle 
 plt.figure(3)
 plt.plot(rpm_arr,wheels3,'r-',rpm_arr,wheels4,'b-',rpm_arr,wheels5,'g-',rpm_arr,wheels6,'k-')
-plt.legend(['3 Wheels','4 Wheels','5 Wheels','6 Wheels'])
-plt.xlabel('rpm')
-plt.ylabel('Max ascent angle (degrees)')
-plt.title('RPM vs Max ascent angle')
+plt.legend(['3 Wheels','4 Wheels','5 Wheels','6 Wheels'],fontsize=16)
+plt.xlabel('RPM',fontsize=22)
+plt.ylabel('Max ascent angle (degrees)',fontsize=22)
+plt.title('RPM vs Max ascent angle',fontsize=22)
 plt.grid(b=None, which='major', axis='both')
 plt.show()
 
@@ -170,13 +170,17 @@ plt.plot(approachAngle, torqueNeeded0, 'k',approachAngle, torqueNeeded5, 'b',app
             approachAngle, torqueNeeded50, 'c',approachAngle, torqueNeeded55, 'm',approachAngle, torqueNeeded60, 'y',\
                 approachAngle, torqueNeeded65, 'k',approachAngle, torqueNeeded70, 'b',approachAngle, torqueNeeded75, 'g',\
                     approachAngle, torqueNeeded80, 'c',approachAngle, torqueNeeded85, 'm',approachAngle, torqueNeeded90, 'y')
-plt.title('Torque Required per approach angle for ' + str(round(activewheels)) + ' wheels')
+plt.title('Torque Required per approach angle for ' + str(round(activewheels)) + ' wheels',fontsize=22)
 plt.legend(['0 Degrees','5 Degrees','10 Degrees','15 Degrees','20 Degrees','25 Degrees','30 Degrees','35 Degrees','40 Degrees','45 Degrees',\
-     '50 Degrees','55 Degrees','60 Degrees','65 Degrees','70 Degrees','75 Degrees','80 Degrees','85 Degrees','90 Degrees'],title = 'Incline Angle')
-plt.xlabel('Approach Angle (Degrees)')
-plt.ylabel('Torque Needed (Oz-In)')
+     '50 Degrees','55 Degrees','60 Degrees','65 Degrees','70 Degrees','75 Degrees','80 Degrees','85 Degrees','90 Degrees'],title = 'Incline Angle',fontsize=14)
+plt.xlabel('Approach Angle (Degrees)',fontsize=22)
+plt.ylabel('Torque Needed (Oz-In)',fontsize=22)
 plt.grid(b=None, which='major', axis='both')
 plt.show()
+
+# Max ascent angle for variying coeffiecents of friction 
+# Theory: torque <= Mass*gravity*coeffiecents of friction/number of wheels 
+
 
 # Data Frame print 
 # Set Data Values
@@ -191,5 +195,7 @@ data1 = np.array([
 colNames = ['Motor RPM', 'Motor Speed (mph)', 'Motor Acceleration','Max Climb Angle']
 
 # Create and print data frame 
+print('For chassis of mass ' + str(round(mass)) + ' Oz')
 df = pd.DataFrame(data = data1,columns=colNames )
 print(df)
+
