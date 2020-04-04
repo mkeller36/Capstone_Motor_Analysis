@@ -79,7 +79,7 @@ plt.show()
 degsperwheel = []
 for i in range(len(activewheels)):
     wheels = activewheels[i]
-    print('----------------' + str(wheels) + ' Active Wheels' + '----------------')
+    #print('----------------' + str(wheels) + ' Active Wheels' + '----------------')
     for i in range(len(torque_arr)):
         torque = torque_arr[i]
         dem = mass*gravity
@@ -88,7 +88,7 @@ for i in range(len(activewheels)):
         maxsloperads = math.asin(theta)
         maxslopedegs = round((180/math.pi)*maxsloperads,2)
         degsperwheel.append(maxslopedegs)
-        print('for ' + str(rpm_arr[i]) + ' motor, max slope is ' + str(maxslopedegs))
+        #print('for ' + str(rpm_arr[i]) + ' motor, max slope is ' + str(maxslopedegs))
 
 # Splitting list by motor 
 degsperwheel313 = degsperwheel[::4]
@@ -130,12 +130,12 @@ torqueNeeded = []
 activewheels = 6.0
 for i in range(len(slopeangle)):
     slope = slopeangle[i]
-    print('----------------' + str(slope) + ' Degree Slope ' + '----------------')
+    #print('----------------' + str(slope) + ' Degree Slope ' + '----------------')
     for i in range(len(approachAngle)):
         approach = approachAngle[i]
         torque = round(((mass*gravity*np.sin(slope*np.pi/180)*np.cos(approach*np.pi/180))/(WheelDiameter/2))/activewheels,2)
         torqueNeeded.append(torque)
-        print('for ' + str(approachAngle[i]) + ' approach, torque needed is ' + str(torque))
+        #print('for ' + str(approachAngle[i]) + ' approach, torque needed is ' + str(torque))
 
 mult = []
 for i in range(len(approachAngle)):
