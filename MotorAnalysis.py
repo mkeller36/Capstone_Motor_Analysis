@@ -82,8 +82,8 @@ for i in range(len(activewheels)):
     #print('----------------' + str(wheels) + ' Active Wheels' + '----------------')
     for i in range(len(torque_arr)):
         torque = torque_arr[i]
-        dem = mass*gravity
-        num = wheels*torque*WheelDiameter/2
+        dem = mass*gravity*WheelDiameter/2
+        num = wheels*torque
         theta = num/dem
         maxsloperads = math.asin(theta)
         maxslopedegs = round((180/math.pi)*maxsloperads,2)
@@ -133,7 +133,7 @@ for i in range(len(slopeangle)):
     #print('----------------' + str(slope) + ' Degree Slope ' + '----------------')
     for i in range(len(approachAngle)):
         approach = approachAngle[i]
-        torque = round(((mass*gravity*np.sin(slope*np.pi/180)*np.cos(approach*np.pi/180))/(WheelDiameter/2))/activewheels,2)
+        torque = round(((mass*gravity*np.sin(slope*np.pi/180)*np.cos(approach*np.pi/180))*(WheelDiameter/2))/activewheels,2)
         torqueNeeded.append(torque)
         #print('for ' + str(approachAngle[i]) + ' approach, torque needed is ' + str(torque))
 
