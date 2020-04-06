@@ -19,6 +19,9 @@ slopeangle = [0.0,5.0,10.0,15.0,20.0,25.0,30.0,35.0,40.0,45.0,50.0,55.0,60.0,65.
 approachAngle = [0.0,5.0,10.0,15.0,20.0,25.0,30.0,35.0,40.0,45.0,50.0,55.0,60.0,65.0,70.0,75.0,80.0,85.0,90.0,90.0]
 gravity = 32.2 #ft/s^2
 mew = np.arange(0.1,1.5,0.1) #initialize
+DistCM2Back = 8.61 # Distance from center of mass to rear
+DistCM2Ground = 4.03 # Distance from center of mass to ground
+DistWheel2Back = 2.99 # Distance from wheel axis to rear
 
 # Creating Class (Marx would not approve)
 class motor:
@@ -96,21 +99,6 @@ for i in range(len(activewheels)):
         maxslopedegs = round((180/math.pi)*maxsloperads,2)
         degsperwheel.append(maxslopedegs)
         #print('for ' + str(rpm_arr[i]) + ' motor, max slope is ' + str(maxslopedegs))
-
-# Max force able to be aplied based on normal force 
-# Theory: Mass * Gravity * sin(theta) = mew*Mass*gravity*cos(theta)
-maxslopefriction = []
-for i in range(len(mew)):
-    maxslopefriction.append(math.degrees(math.atan(mew[i])))
-plt.figure(5)
-plt.plot(mew,maxslopefriction)
-plt.xlabel('Coefficient of friction',fontsize=22)
-plt.ylabel('Max ascent angle (degrees)',fontsize=22)
-plt.title('Coefficient of friction vs Max ascent angle',fontsize=22)
-plt.grid(b=None, which='major', axis='both',)
-# https://www.engineeringtoolbox.com/friction-coefficients-d_778.html
-plt.show
-# limiting max force applied to max possible by friction 
 
 # Splitting list by motor 
 degsperwheel313 = degsperwheel[::4]
@@ -200,17 +188,37 @@ plt.ylabel('Torque Needed (Oz-In)',fontsize=22)
 plt.grid(b=None, which='major', axis='both')
 plt.show()
 
+# Max climb angle based on friction, ie force able to be applied based on normal force 
+# Theory: Mass * Gravity * sin(theta) = mew*Mass*gravity*cos(theta)
+maxslopefriction = []
+for i in range(len(mew)):
+    maxslopefriction.append(math.degrees(math.atan(mew[i])))
+plt.figure(5)
+plt.plot(mew,maxslopefriction)
+plt.xlabel('Coefficient of friction',fontsize=22)
+plt.ylabel('Max ascent angle (degrees)',fontsize=22)
+plt.title('Coefficient of friction vs Max ascent angle',fontsize=22)
+plt.grid(b=None, which='major', axis='both')
+# https://www.engineeringtoolbox.com/friction-coefficients-d_778.html
+plt.show()
+# limiting max force applied to max possible by friction 
+
+# Max climb angle based on flipping/rolling 
+# Theory: If center of mass goes past rear wheels axis, the drone will flip over 
+rollAngle = math.degrees(math.atan(DistCM2Ground/(DistCM2Back-DistWheel2Back)))
+
 # Data Frame print 
 # Set Data Values
 data1 = np.array([
-[motor1.rpm, motor1.speed, motor1.accel,degsperwheel313[3]],
-[motor2.rpm, motor2.speed, motor2.accel,degsperwheel437[3]],
-[motor3.rpm, motor3.speed, motor3.accel,degsperwheel612[3]],
-[motor4.rpm, motor4.speed, motor4.accel,degsperwheel1621[3]]
+[motor1.rpm, motor1.speed, motor1.accel, degsperwheel313[3], rollAngle, 'Arctan(coefficient of friction)'],
+[motor2.rpm, motor2.speed, motor2.accel, degsperwheel437[3], rollAngle, 'Arctan(coefficient of friction)'],
+[motor3.rpm, motor3.speed, motor3.accel, degsperwheel612[3], rollAngle, 'Arctan(coefficient of friction)'],
+[motor4.rpm, motor4.speed, motor4.accel, degsperwheel1621[3], rollAngle, 'Arctan(coefficient of friction)']
 ])
 
 # Set Column Vales 
-colNames = ['Motor RPM', 'Motor Speed (mph)', 'Motor Acceleration (mph/s)','Max Climb Angle Due to Torque (degrees)']
+colNames = ['Motor RPM', 'Motor Speed (mph)', 'Motor Acceleration (mph/s)','Max Climb Angle Due to Torque (degrees)',\
+     'Max Climb Angle Before Rolling (degrees)','Max Climb Angle Based on Coefficient of Friction']
 
 # Create and print data frame 
 print('For chassis of mass ' + str(round(mass)) + ' Oz')
