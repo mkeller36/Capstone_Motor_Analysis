@@ -14,10 +14,11 @@ WheelDiameter = 5.4 #inch
 mass = float(240) # OZ = 15 lbs (force) gravity conversion not needed 
 conversion = 0.00094697 # Oz-In to ft-lbs
 conversion2 = 0.056818181818184 # in/s^2 to mph/s
-activewheels = [3.0,4.0,5.0,6.0]
+activewheels = np.arange(3.0,7.0)
 slopeangle = [0.0,5.0,10.0,15.0,20.0,25.0,30.0,35.0,40.0,45.0,50.0,55.0,60.0,65.0,70.0,75.0,80.0,85.0,90.0,90.0]
 approachAngle = [0.0,5.0,10.0,15.0,20.0,25.0,30.0,35.0,40.0,45.0,50.0,55.0,60.0,65.0,70.0,75.0,80.0,85.0,90.0,90.0]
 gravity = 32.2 #ft/s^2
+mew = np.arange(0.1,1.5,0.1) #initialize
 
 # Creating Class (Marx would not approve)
 class motor:
@@ -75,20 +76,41 @@ plt.grid(b=None, which='major', axis='both')
 plt.show()
 
 # Possible climb angle 
+# clime angle is controlled by torque, then normal force, then location of center of gravity (whether it will roll or not)
 # Theory: active wheels * torque * wheel diameter  = normal force * sin(slope angle)
 degsperwheel = []
 for i in range(len(activewheels)):
     wheels = activewheels[i]
     #print('----------------' + str(wheels) + ' Active Wheels' + '----------------')
     for i in range(len(torque_arr)):
+        # Torque force 
         torque = torque_arr[i]
         dem = mass*WheelDiameter/2
         num = wheels*torque
         theta = num/dem
-        maxsloperads = math.asin(theta)
+        if theta > 1:
+            theta = 1 
+        else:
+            theta = theta
+        maxsloperads = math.asin(theta)    
         maxslopedegs = round((180/math.pi)*maxsloperads,2)
         degsperwheel.append(maxslopedegs)
         #print('for ' + str(rpm_arr[i]) + ' motor, max slope is ' + str(maxslopedegs))
+
+# Max force able to be aplied based on normal force 
+# Theory: Mass * Gravity * sin(theta) = mew*Mass*gravity*cos(theta)
+maxslopefriction = []
+for i in range(len(mew)):
+    maxslopefriction.append(math.degrees(math.atan(mew[i])))
+plt.figure(5)
+plt.plot(mew,maxslopefriction)
+plt.xlabel('Coefficient of friction',fontsize=22)
+plt.ylabel('Max ascent angle (degrees)',fontsize=22)
+plt.title('Coefficient of friction vs Max ascent angle',fontsize=22)
+plt.grid(b=None, which='major', axis='both',)
+# https://www.engineeringtoolbox.com/friction-coefficients-d_778.html
+plt.show
+# limiting max force applied to max possible by friction 
 
 # Splitting list by motor 
 degsperwheel313 = degsperwheel[::4]
@@ -119,7 +141,7 @@ plt.plot(rpm_arr,wheels3,'r-',rpm_arr,wheels4,'b-',rpm_arr,wheels5,'g-',rpm_arr,
 plt.legend(['3 Wheels','4 Wheels','5 Wheels','6 Wheels'],fontsize=16)
 plt.xlabel('RPM',fontsize=22)
 plt.ylabel('Max ascent angle (degrees)',fontsize=22)
-plt.title('RPM vs Max ascent angle',fontsize=22)
+plt.title('RPM vs Max ascent angle due to torque',fontsize=22)
 plt.grid(b=None, which='major', axis='both')
 plt.show()
 
@@ -178,10 +200,6 @@ plt.ylabel('Torque Needed (Oz-In)',fontsize=22)
 plt.grid(b=None, which='major', axis='both')
 plt.show()
 
-# Max ascent angle for variying coeffiecents of friction 
-# Theory: torque <= Mass*gravity*coeffiecents of friction/number of wheels 
-
-
 # Data Frame print 
 # Set Data Values
 data1 = np.array([
@@ -192,7 +210,7 @@ data1 = np.array([
 ])
 
 # Set Column Vales 
-colNames = ['Motor RPM', 'Motor Speed (mph)', 'Motor Acceleration (mph/s)','Max Climb Angle (degrees)']
+colNames = ['Motor RPM', 'Motor Speed (mph)', 'Motor Acceleration (mph/s)','Max Climb Angle Due to Torque (degrees)']
 
 # Create and print data frame 
 print('For chassis of mass ' + str(round(mass)) + ' Oz')
