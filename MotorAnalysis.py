@@ -41,10 +41,10 @@ motor3.speed = math.pi*WheelDiameter*motor3.rpm*conversion
 motor4.speed = math.pi*WheelDiameter*motor4.rpm*conversion
 
 # Acceleration on flat ground - mph/s
-motor1.accel = motor1.torque*(WheelDiameter/2)*conversion2 
-motor2.accel = motor2.torque*(WheelDiameter/2)*conversion2 
-motor3.accel = motor3.torque*(WheelDiameter/2)*conversion2 
-motor4.accel = motor4.torque*(WheelDiameter/2)*conversion2 
+motor1.accel = (motor1.torque/(WheelDiameter/2))*conversion2 
+motor2.accel = (motor2.torque/(WheelDiameter/2))*conversion2 
+motor3.accel = (motor3.torque/(WheelDiameter/2))*conversion2 
+motor4.accel = (motor4.torque/(WheelDiameter/2))*conversion2 
 
 # Set arrays 
 rpm_arr = [motor1.rpm,motor2.rpm,motor3.rpm,motor4.rpm]
@@ -192,7 +192,7 @@ data1 = np.array([
 ])
 
 # Set Column Vales 
-colNames = ['Motor RPM', 'Motor Speed (mph)', 'Motor Acceleration','Max Climb Angle']
+colNames = ['Motor RPM', 'Motor Speed (mph)', 'Motor Acceleration (mph/s)','Max Climb Angle (degrees)']
 
 # Create and print data frame 
 print('For chassis of mass ' + str(round(mass)) + ' Oz')
