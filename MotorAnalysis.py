@@ -11,7 +11,7 @@ import pandas as pd
 
 # Var setup 
 WheelDiameter = 5.4 #inch 
-mass = float(240) # OZ = 15 lbs
+mass = float(240) # OZ = 15 lbs (force) gravity conversion not needed 
 conversion = 0.00094697 # Oz-In to ft-lbs
 conversion2 = 0.056818181818184 # in/s^2 to mph/s
 activewheels = [3.0,4.0,5.0,6.0]
@@ -75,14 +75,14 @@ plt.grid(b=None, which='major', axis='both')
 plt.show()
 
 # Possible climb angle 
-# Theory: active wheels * torque * wheel diameter  = mass * gravity * sin(slope angle)
+# Theory: active wheels * torque * wheel diameter  = normal force * sin(slope angle)
 degsperwheel = []
 for i in range(len(activewheels)):
     wheels = activewheels[i]
     #print('----------------' + str(wheels) + ' Active Wheels' + '----------------')
     for i in range(len(torque_arr)):
         torque = torque_arr[i]
-        dem = mass*gravity*WheelDiameter/2
+        dem = mass*WheelDiameter/2
         num = wheels*torque
         theta = num/dem
         maxsloperads = math.asin(theta)
@@ -133,7 +133,7 @@ for i in range(len(slopeangle)):
     #print('----------------' + str(slope) + ' Degree Slope ' + '----------------')
     for i in range(len(approachAngle)):
         approach = approachAngle[i]
-        torque = round(((mass*gravity*np.sin(slope*np.pi/180)*np.cos(approach*np.pi/180))*(WheelDiameter/2))/activewheels,2)
+        torque = round(((mass*np.sin(slope*np.pi/180)*np.cos(approach*np.pi/180))*(WheelDiameter/2))/activewheels,2)
         torqueNeeded.append(torque)
         #print('for ' + str(approachAngle[i]) + ' approach, torque needed is ' + str(torque))
 
