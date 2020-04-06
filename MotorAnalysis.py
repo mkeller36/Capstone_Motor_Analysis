@@ -22,6 +22,7 @@ mew = np.arange(0.1,1.5,0.1) #initialize
 DistCM2Back = 8.61 # Distance from center of mass to rear
 DistCM2Ground = 4.03 # Distance from center of mass to ground
 DistWheel2Back = 2.99 # Distance from wheel axis to rear
+DistCM2BackTheory = np.arange(3,20)
 
 # Creating Class (Marx would not approve)
 class motor:
@@ -39,16 +40,16 @@ motor3 = motor(612,222.0,0,0)
 motor4 = motor(1621,97.2,0,0)
 
 # rpm to speed - mph
-motor1.speed = math.pi*WheelDiameter*motor1.rpm*conversion
-motor2.speed = math.pi*WheelDiameter*motor2.rpm*conversion
-motor3.speed = math.pi*WheelDiameter*motor3.rpm*conversion
-motor4.speed = math.pi*WheelDiameter*motor4.rpm*conversion
+motor1.speed = np.round(math.pi*WheelDiameter*motor1.rpm*conversion, 2)
+motor2.speed = np.round(math.pi*WheelDiameter*motor2.rpm*conversion, 2)
+motor3.speed = np.round(math.pi*WheelDiameter*motor3.rpm*conversion, 2)
+motor4.speed = np.round(math.pi*WheelDiameter*motor4.rpm*conversion, 2)
 
 # Acceleration on flat ground - mph/s
-motor1.accel = (motor1.torque/(WheelDiameter/2))*conversion2 
-motor2.accel = (motor2.torque/(WheelDiameter/2))*conversion2 
-motor3.accel = (motor3.torque/(WheelDiameter/2))*conversion2 
-motor4.accel = (motor4.torque/(WheelDiameter/2))*conversion2 
+motor1.accel = np.round((motor1.torque/(WheelDiameter/2))*conversion2, 2)
+motor2.accel = np.round((motor2.torque/(WheelDiameter/2))*conversion2, 2)
+motor3.accel = np.round((motor3.torque/(WheelDiameter/2))*conversion2, 2)
+motor4.accel = np.round((motor4.torque/(WheelDiameter/2))*conversion2, 2)
 
 # Set arrays 
 rpm_arr = [motor1.rpm,motor2.rpm,motor3.rpm,motor4.rpm]
@@ -205,7 +206,17 @@ plt.show()
 
 # Max climb angle based on flipping/rolling 
 # Theory: If center of mass goes past rear wheels axis, the drone will flip over 
-rollAngle = math.degrees(math.atan(DistCM2Ground/(DistCM2Back-DistWheel2Back)))
+rollAngleTheory = []
+for i in range(len(DistCM2BackTheory)):
+    rollAngleTheory.append( 90-math.degrees(math.atan(DistCM2Ground/(DistCM2BackTheory[i]-DistWheel2Back))))
+rollAngle = round(90-math.degrees(math.atan(DistCM2Ground/(DistCM2Back-DistWheel2Back))), 2)
+plt.figure(6)
+plt.plot(DistCM2BackTheory,rollAngleTheory)
+plt.xlabel('Distance between center of mass and back',fontsize=22)
+plt.ylabel('Max ascent angle (degrees)',fontsize=22)
+plt.title('Distance between center of mass and back vs Max ascent angle',fontsize=22)
+plt.grid(b=None, which='major', axis='both')
+plt.show()
 
 # Data Frame print 
 # Set Data Values
@@ -218,7 +229,7 @@ data1 = np.array([
 
 # Set Column Vales 
 colNames = ['Motor RPM', 'Motor Speed (mph)', 'Motor Acceleration (mph/s)','Max Climb Angle Due to Torque (degrees)',\
-     'Max Climb Angle Before Rolling (degrees)','Max Climb Angle Based on Coefficient of Friction']
+     'Max Climb Angle Before Flipping (degrees)','Max Climb Angle Based on Coefficient of Friction']
 
 # Create and print data frame 
 print('For chassis of mass ' + str(round(mass)) + ' Oz')
