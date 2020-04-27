@@ -195,6 +195,8 @@ plt.legend(['0 Degrees','5 Degrees','10 Degrees','15 Degrees','20 Degrees','25 D
 plt.xlabel('Approach Angle (Degrees)',fontsize=22)
 plt.ylabel('Torque Needed (Oz-In)',fontsize=22)
 plt.grid(b=None, which='major', axis='both')
+plt.xticks(fontsize=18)
+plt.yticks(fontsize=18)
 plt.show()
 
 # Max climb angle based on friction, ie force able to be applied based on normal force 
