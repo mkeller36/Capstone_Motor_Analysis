@@ -67,6 +67,8 @@ plt.ylabel('torque (Oz-In)',fontsize=22)
 plt.title('RPM vs torque',fontsize=22)
 plt.text(600,350,str(round(relation[0],5))+'$x^{2} + $' + str(round(relation[1],3)) + 'x + '+ str(round(relation[2],3)),fontsize=18)
 plt.grid(b=None, which='major', axis='both')
+plt.xticks(fontsize=18)
+plt.yticks(fontsize=18)
 
 # Plot Speed to RPM
 plt.subplot(1, 2, 2) 
@@ -77,6 +79,8 @@ plt.title('RPM vs Speed',fontsize=22)
 relation = np.polyfit(rpm_arr,speed_arr,1)
 plt.text(1000,10,str(round(relation[0],3)) + 'x + '+ str(round(relation[1],5)),fontsize=18)
 plt.grid(b=None, which='major', axis='both')
+plt.xticks(fontsize=18)
+plt.yticks(fontsize=18)
 plt.show()
 
 # Possible climb angle 
@@ -115,6 +119,8 @@ plt.xlabel('Active wheels',fontsize=22)
 plt.ylabel('Max ascent angle (degrees)',fontsize=22)
 plt.title('Active Wheels vs Max ascent angle',fontsize=22)
 plt.grid(b=None, which='major', axis='both',)
+plt.xticks(fontsize=18)
+plt.yticks(fontsize=18)
 plt.show()
 
 
@@ -132,6 +138,8 @@ plt.xlabel('RPM',fontsize=22)
 plt.ylabel('Max ascent angle (degrees)',fontsize=22)
 plt.title('RPM vs Max ascent angle due to torque',fontsize=22)
 plt.grid(b=None, which='major', axis='both')
+plt.xticks(fontsize=18)
+plt.yticks(fontsize=18)
 plt.show()
 
 # torque needed at different angle to go up incline 
@@ -200,6 +208,8 @@ plt.xlabel('Coefficient of friction',fontsize=22)
 plt.ylabel('Max ascent angle (degrees)',fontsize=22)
 plt.title('Coefficient of friction vs Max ascent angle',fontsize=22)
 plt.grid(b=None, which='major', axis='both')
+plt.xticks(fontsize=18)
+plt.yticks(fontsize=18)
 # https://www.engineeringtoolbox.com/friction-coefficients-d_778.html
 plt.show()
 # limiting max force applied to max possible by friction 
@@ -216,6 +226,8 @@ plt.xlabel('Distance between center of mass and back',fontsize=22)
 plt.ylabel('Max ascent angle (degrees)',fontsize=22)
 plt.title('Distance between center of mass and back vs Max ascent angle',fontsize=22)
 plt.grid(b=None, which='major', axis='both')
+plt.xticks(fontsize=18)
+plt.yticks(fontsize=18)
 plt.show()
 
 # Data Frame print 
